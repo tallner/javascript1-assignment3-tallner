@@ -56,7 +56,12 @@ const url = `https://www.flickr.com/services/rest/?api_key=${KEY}&method=flickr.
 //     document.body.append(img);
 // }
 
-fetch(url).then(responseFunction).then(dataFunction).catch(errorFunction);
+console.log(
+fetch(url) //Send a request to the API
+.then(responseFunction) //When the promise is fulfilled, run the callback function responseFunction 
+.then(getImageUrl) //When that promise is fulfilled, run the callback function getImageUrl 
+.catch(errorFunction) // If the promises are not fulfilled then catch it with calling the errorFunction
+);
 
 function responseFunction(response){
     console.log(response);
@@ -68,11 +73,11 @@ function responseFunction(response){
         }
 }
 
-function dataFunction(data){
-    console.log(data);
-        //Vi hämtar första bilden
-        getImageUrl(data.photos.photo[0]);
-}
+// function dataFunction(data){
+//     console.log(data);
+//     //Vi hämtar första bilden
+//     getImageUrl(data.photos.photo[0]);
+// }
 
 function errorFunction(error){
     console.log(error);
@@ -80,7 +85,8 @@ function errorFunction(error){
 
 //här ska vi pussla ihop bild-urlen
 function getImageUrl(photoObject){
-    let photo = photoObject;
+    console.log(photoObject);
+    let photo = photoObject.photos.photo[0];
     let size = 'm';
 
     let imgUrl = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_${size}.jpg`;
