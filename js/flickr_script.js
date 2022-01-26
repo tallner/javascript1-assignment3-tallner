@@ -1,37 +1,29 @@
-//My KEY at flickr
-const KEY = `052a884f5955c2c6e26e1c31ad61e000`;
+//Test searchfield, replaced by input later
+let searchText = `I JUST WANT TO WORKOUT AND HANG WITH MY DOG`;
 
 const btn_search = document.querySelector('button');
 const inp_search_string = document.querySelector('#search');
 const inp_img_size = document.querySelector('#size');
 
-btn_search.addEventListener('click',getSearchStrings);
+btn_search.addEventListener('click', e => removeImage()); //starting point of the application
+btn_search.addEventListener('click', e => getImages(searchText,'m')); 
 inp_search_string.addEventListener('click',e => inp_search_string.value='');
 inp_img_size.addEventListener('click',e => inp_search_string.value='');
 
-function getSearchStrings(){
-    console.log('hej');
-    return [inp_search_string.value,inp_search_string.value];
-}
-console.log(btn_search);
 
-//Test searchfield, replaced by input later
-let searchText = `I JUST WANT TO WORKOUT AND HANG WITH MY DOG`;
-
-//Use pagination, 1 picture, 1 page
-
-
-getImages(searchText,'m');
-
-function getImages(searchText,size){
-    const url = `https://www.flickr.com/services/rest/?api_key=${KEY}&method=flickr.photos.search&text=${searchText}&format=json&nojsoncallback=1&per_page=1&page=1`;
+// Embed the api call in a function and pass args text and size
+function getImages(text,size){
+    //My KEY at flickr
+    const KEY = `052a884f5955c2c6e26e1c31ad61e000`;
+    
+    //Use pagination, 1 picture, 1 page
+    const url = `https://www.flickr.com/services/rest/?api_key=${KEY}&method=flickr.photos.search&text=${text}&format=json&nojsoncallback=1&per_page=1&page=1`;
 
     fetch(url) //Send a request to the API
     .then(responseFunction) //When the promise is fulfilled, run the function responseFunction 
     .then(data => getImageUrl(data.photos.photo[0],size)) //When that promise is fulfilled, run the function getImageUrl 
     .catch(errorFunction); // If the promises are not fulfilled then catch it with calling the errorFunction
 }
-
 
 
 // Checks if the response http response is ok (eg 200-299)
@@ -65,9 +57,18 @@ function getImageUrl(photoObject,size){
 function displayImg(url){
     let img = document.createElement('img');
     img.src = url;
- //   img.addEventListener("error", imgError);
+    img.addEventListener("error", imgError);
 
     document.body.appendChild(img);
+}
+
+function removeImage(){
+    const img = document.querySelector('img');
+    console.log(img);
+    if(img != null){
+        img.remove();
+    }
+
 }
 
 // this function returns the error from the catch to the console
