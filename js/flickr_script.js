@@ -10,6 +10,7 @@ inp_search_string.addEventListener('click',e => inp_search_string.value='');
 inp_img_size.addEventListener('click',e => inp_img_size.value='');
 //inp_nr_img.addEventListener('click',e => inp_nr_img.value='');
 
+//@ct: lägg till felmeddelande på hemsidan
 //@ct: lås knappen under tiden sökning sker
 btn_search.addEventListener('click', e => removeImage()); //starting point of the application. remove current image before displaying the next
 //btn_search.addEventListener('click', e => getImages(searchText,'m')); 
