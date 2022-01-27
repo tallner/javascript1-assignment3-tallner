@@ -1,14 +1,18 @@
 //Test searchfield, replaced by input later
-let searchText = `I JUST WANT TO WORKOUT AND HANG WITH MY DOG`;
+//let searchText = `I JUST WANT TO WORKOUT AND HANG WITH MY DOG`;
 
 const btn_search = document.querySelector('button');
 const inp_search_string = document.querySelector('#search');
 const inp_img_size = document.querySelector('#size');
 
-btn_search.addEventListener('click', e => removeImage()); //starting point of the application
-btn_search.addEventListener('click', e => getImages(searchText,'m')); 
 inp_search_string.addEventListener('click',e => inp_search_string.value='');
-inp_img_size.addEventListener('click',e => inp_search_string.value='');
+inp_img_size.addEventListener('click',e => inp_img_size.value='');
+
+btn_search.addEventListener('click', e => removeImage()); //starting point of the application. remove current image before displaying the next
+//btn_search.addEventListener('click', e => getImages(searchText,'m')); 
+btn_search.addEventListener('click', e => getImages(inp_search_string.value,inp_img_size.value)); 
+
+
 
 
 // Embed the api call in a function and pass args text and size
