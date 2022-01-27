@@ -6,3 +6,11 @@
     text-decoration: none;
     font-family: 'Trajan Pro 3';
 }
+
+input{
+    border: 1px solid grey;
+}
+
+button{
+    cursor: pointer;
+}

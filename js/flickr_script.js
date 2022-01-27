@@ -15,6 +15,7 @@ inp_img_size.addEventListener('click',e => inp_img_size.value='');
 btn_search.addEventListener('click', e => removeImage()); //starting point of the application. remove current image before displaying the next
 //btn_search.addEventListener('click', e => getImages(searchText,'m')); 
 btn_search.addEventListener('click', e => getImages(inp_search_string.value,inp_img_size.value,inp_nr_img.value)); 
+btn_search.addEventListener('click', e => btn_search.disabled = true);
 
 
 
@@ -50,16 +51,17 @@ function responseFunction(response){
 
 //Put together the URL for the image with the information from the result in the response from the API
 function getImageUrl(photoObject,size){
+    
    for (const iterator of photoObject.photos.photo) {
     //console.log(iterator);
     let imgUrl = `https://live.staticflickr.com/${iterator.server}/${iterator.id}_${iterator.secret}_${size}.jpg`;
     displayImg(imgUrl);
    }
-    
+    btn_search.disabled = false;
    // let photo = photoObject.photos.photo[0];
 
 
-    let photo = photoObject;
+    //let photo = photoObject;
     //let size = 'k'; //size of the image-->replaced by a user input later
 
     // let imgUrl = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_${size}.jpg`;
@@ -73,6 +75,7 @@ function displayImg(url){
     let img = document.createElement('img');
     img.src = url;
     img.addEventListener("error", imgError);
+   // img.addEventListener("error", e => return null);
     img.addEventListener("load", e => document.body.appendChild(img));
 
 //    document.body.appendChild(img);
@@ -99,4 +102,6 @@ function errorFunction(error){
 function imgError(e) {
    // console.log(e);
     console.log('This image cannot be loaded, try another size');
+    alert('This image cannot be loaded, try another size');
+    return
   }
