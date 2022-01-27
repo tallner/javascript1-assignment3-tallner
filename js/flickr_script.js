@@ -3,6 +3,9 @@
 
 //create a main tag and add all pictures inside
 let main = document.createElement('main');
+main.style.overflow = 'scroll';
+main.style.whiteSpace = 'nowrap';
+
 document.body.appendChild(main);
 
 //get the button and inputs
