@@ -8,16 +8,14 @@ const inp_nr_img = document.querySelector('#nrobjects');
 
 inp_search_string.addEventListener('click',e => inp_search_string.value='');
 inp_img_size.addEventListener('click',e => inp_img_size.value='');
-//inp_nr_img.addEventListener('click',e => inp_nr_img.value='');
 
-//@ct: lägg till felmeddelande på hemsidan
-//@ct: lås knappen under tiden sökning sker
-btn_search.addEventListener('click', e => removeImage()); //starting point of the application. remove current image before displaying the next
-//btn_search.addEventListener('click', e => getImages(searchText,'m')); 
-btn_search.addEventListener('click', e => getImages(inp_search_string.value,inp_img_size.value,inp_nr_img.value)); 
-btn_search.addEventListener('click', e => btn_search.disabled = true);
-
-
+//starting point of the application is when clicking the searchbutton
+btn_search.addEventListener('click', e => removeImage()); //remove current image before displaying the next
+btn_search.addEventListener('click', e => getImages(//get images
+    inp_search_string.value,//add searchstring
+    inp_img_size.value,//add size
+    inp_nr_img.value)); //add number of objects
+btn_search.addEventListener('click', e => btn_search.disabled = true);//disable the button during search so you cannot doublepress it
 
 
 // Embed the api call in a function and pass args text and size
@@ -25,7 +23,7 @@ function getImages(text,size,nrobjects){
     //My KEY at flickr
     const KEY = `052a884f5955c2c6e26e1c31ad61e000`;
     
-    //Use pagination, 1 picture, 1 page
+    //Use pagination, 1 page, x pictures
     const url = `https://www.flickr.com/services/rest/?api_key=${KEY}&method=flickr.photos.search&text=${text}&format=json&nojsoncallback=1&per_page=${nrobjects}&page=1`;
 
     fetch(url) //Send a request to the API
@@ -39,11 +37,11 @@ function getImages(text,size,nrobjects){
 // If it is a good response then parse it to json format with the .json()-method
 // If not, write a message to the console
 function responseFunction(response){
-   //console.log(response);
         if(response.status>=200 && response.status<300){
             return response.json();
         }
         else{
+            displayErrorMsg(response.status);
             throw 'Something went wrong. :(';
         }
 }
@@ -53,21 +51,12 @@ function responseFunction(response){
 function getImageUrl(photoObject,size){
     
    for (const iterator of photoObject.photos.photo) {
-    //console.log(iterator);
-    let imgUrl = `https://live.staticflickr.com/${iterator.server}/${iterator.id}_${iterator.secret}_${size}.jpg`;
-    displayImg(imgUrl);
+       let imgUrl = `https://live.staticflickr.com/${iterator.server}/${iterator.id}_${iterator.secret}_${size}.jpg`;
+       displayImg(imgUrl);
    }
-    btn_search.disabled = false;
-   // let photo = photoObject.photos.photo[0];
-
-
-    //let photo = photoObject;
-    //let size = 'k'; //size of the image-->replaced by a user input later
-
-    // let imgUrl = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_${size}.jpg`;
-
-    // displayImg(imgUrl);
+   btn_search.disabled = false; //enable the button when search is done
 }
+
 
 //Create an image and add the source
 //Use eventlistener to catch errors when loading the image
@@ -75,33 +64,47 @@ function displayImg(url){
     let img = document.createElement('img');
     img.src = url;
     img.addEventListener("error", imgError);
-   // img.addEventListener("error", e => return null);
     img.addEventListener("load", e => document.body.appendChild(img));
-
-//    document.body.appendChild(img);
 }
 
+//remove all images and errormessages before new search is executed
 function removeImage(){
     const img = document.querySelectorAll('img');
-   // console.log(img.length);
+    const h2 = document.querySelectorAll('h2');
     if(img.length != 0){
         for (const iterator of img) {
             iterator.remove();
         }
-//        img.remove();
     }
 
+    if(h2.length != 0){
+        for (const iterator of h2) {
+            iterator.remove();
+        }
+    }
 }
 
 // this function returns the error from the catch to the console
 function errorFunction(error){
     console.log('Error: ' , error);
+    displayErrorMsg(
+        'Check your connection or searchstring.'+
+        '<br>'+
+        'Error definition:'+
+        '<br>'+
+        error);
 }
 
 //Take care of the image error
 function imgError(e) {
-   // console.log(e);
-    console.log('This image cannot be loaded, try another size');
-    alert('This image cannot be loaded, try another size');
-    return
+    console.log(e);
+    displayErrorMsg('This image cannot be loaded, try another size');
+  }
+
+  //function to add error message to an H2 element on the website
+function displayErrorMsg(errorText){
+    const errorMsg = document.createElement('h2');
+    errorMsg.innerHTML = errorText;
+    document.body.appendChild(errorMsg);
+    btn_search.disabled = false;
   }

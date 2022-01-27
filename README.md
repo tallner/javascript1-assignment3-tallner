@@ -7,3 +7,5 @@ Q
 how to test for errors in the api, i always get 200?
 hot to get the 410 when image size is wrong?
 how to interrupt the outer for-loop when the eventlistener detects error?
+i want to write error text only once also when searching for many pictures
+ok to define size with M, K etc?
