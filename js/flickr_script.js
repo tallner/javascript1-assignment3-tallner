@@ -1,6 +1,11 @@
 //Test searchfield, replaced by input later
 //let searchText = `I JUST WANT TO WORKOUT AND HANG WITH MY DOG`;
 
+//create a main tag and add all pictures inside
+let main = document.createElement('main');
+document.body.appendChild(main);
+
+//get the button and inputs
 const btn_search = document.querySelector('button');
 const inp_search_string = document.querySelector('#search');
 const inp_img_size = document.querySelector('#size');
@@ -49,22 +54,22 @@ function responseFunction(response){
 
 //Put together the URL for the image with the information from the result in the response from the API
 function getImageUrl(photoObject,size){
-    
-   for (const iterator of photoObject.photos.photo) {
-       let imgUrl = `https://live.staticflickr.com/${iterator.server}/${iterator.id}_${iterator.secret}_${size}.jpg`;
-       displayImg(imgUrl);
-   }
-   btn_search.disabled = false; //enable the button when search is done
+    for (const iterator of photoObject.photos.photo) {
+        let imgUrl = `https://live.staticflickr.com/${iterator.server}/${iterator.id}_${iterator.secret}_${size}.jpg`;
+        displayImg(imgUrl);
+    }
+    btn_search.disabled = false; //enable the button when search is done
 }
 
 
 //Create an image and add the source
 //Use eventlistener to catch errors when loading the image
 function displayImg(url){
+    
     let img = document.createElement('img');
     img.src = url;
     img.addEventListener("error", imgError);
-    img.addEventListener("load", e => document.body.appendChild(img));
+    img.addEventListener("load", e => main.appendChild(img));
 }
 
 //remove all images and errormessages before new search is executed
