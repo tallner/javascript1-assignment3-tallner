@@ -38,7 +38,7 @@ function getImages(text,size,nrobjects){
 // If it is a good response then parse it to json format with the .json()-method
 // If not, write a message to the console
 function responseFunction(response){
-   console.log(response);
+   //console.log(response);
         if(response.status>=200 && response.status<300){
             return response.json();
         }
@@ -51,7 +51,7 @@ function responseFunction(response){
 //Put together the URL for the image with the information from the result in the response from the API
 function getImageUrl(photoObject,size){
    for (const iterator of photoObject.photos.photo) {
-    console.log(iterator);
+    //console.log(iterator);
     let imgUrl = `https://live.staticflickr.com/${iterator.server}/${iterator.id}_${iterator.secret}_${size}.jpg`;
     displayImg(imgUrl);
    }
@@ -73,13 +73,14 @@ function displayImg(url){
     let img = document.createElement('img');
     img.src = url;
     img.addEventListener("error", imgError);
+    img.addEventListener("load", e => document.body.appendChild(img));
 
-    document.body.appendChild(img);
+//    document.body.appendChild(img);
 }
 
 function removeImage(){
     const img = document.querySelectorAll('img');
-    console.log(img.length);
+   // console.log(img.length);
     if(img.length != 0){
         for (const iterator of img) {
             iterator.remove();
@@ -96,6 +97,6 @@ function errorFunction(error){
 
 //Take care of the image error
 function imgError(e) {
-    console.log(e);
+   // console.log(e);
     console.log('This image cannot be loaded, try another size');
   }
